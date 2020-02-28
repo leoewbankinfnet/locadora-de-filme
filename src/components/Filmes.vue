@@ -1,6 +1,7 @@
 <template>
   <div id="filmes" class="container">
     <h2 id="enc"> Filmes Encontrados </h2>
+    <b-button variant="outline-primary"> Carrinho: {{ quantidadeCarrinho}} filmes</b-button>
     
     <!-- <b-row>
       <b-col >
@@ -61,7 +62,7 @@
       >
         <b-card-text > {{filme.descricao}} </b-card-text>
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
-         <b-button variant="outline-primary"><a href="#" class="card-link">Clique aqui para alugar</a></b-button>
+         <b-button variant="outline-primary"><a href="#" class="card-link" @click="adicionarCarrinho(filme)">Alugar</a></b-button>
       </b-card>
     </b-col>
   
@@ -91,6 +92,11 @@ export default {
   methods : {
     adicionarCarrinho: function (filme){
       this.carrinho.push(filme.id);
+    }
+  },
+  computed: {
+    quantidadeCarrinho: function(){
+      return this.carrinho.length;
     }
   }
         
