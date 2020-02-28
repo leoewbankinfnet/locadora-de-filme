@@ -38,7 +38,81 @@
     
   </b-row>
   <b-row v-else>
-      <h2> Carrinho </h2>   
+      <h2> Carrinho </h2>
+       <div class="col-12">
+       <form>
+         <div class="form-group">
+           <label for="pedido.primeiroNome">Primeiro nome</label>
+           <input
+             type="text"
+             class="form-control"
+             id="primeiroNome"
+             placeholder="Digita o primeiro nome"
+             v-model="pedido.primeiroNome"
+           >
+         </div>
+         <div class="form-group">
+           <label for="ultimoNome">Último nome</label>
+           <input
+             type="text"
+             class="form-control"
+             id="ultimoNome"
+             placeholder="Digite o último nome"
+             v-model="pedido.ultimoNome"
+           >
+         </div>
+         <div class="form-group">
+           <label for="endereco">Endereço</label>
+           <input
+             type="text"
+             class="form-control"
+             id="endereco"
+             placeholder="Digita o endereço"
+             v-model="pedido.endereco"
+           >
+         </div>
+         <div class="form-group">
+           <label for="cidade">Cidade</label>
+           <input
+             type="text"
+             class="form-control"
+             id="cidade"
+             placeholder="Digita a cidade"
+             v-model="pedido.cidade"
+           >
+         </div>
+         <div class="form-group">
+           <label for="estado">Estado</label>
+           <select class="form-control" id="estado" v-model="pedido.estado">
+             <option disabled value>Escolha um estado</option>
+             <option>RJ</option>
+             <option>SP</option>
+           </select>
+         </div>
+         <div class="form-group">
+           <label for="cep">CEP</label>
+           <input
+             type="text"
+             class="form-control"
+             id="cep"
+             placeholder="Digita o CEP"
+             v-model="pedido.cep"
+           >
+         </div>
+       </form>
+     </div>
+     <div class="col-12">
+       <pre>
+         Primeiro nome: {{ pedido.primeiroNome }}
+         Último nome: {{ pedido.ultimoNome }}
+         Endereço: {{ pedido.endereco }}
+         Cidade: {{ pedido.cidade }}
+         Estado: {{ pedido.estado }}
+         CEP: {{ pedido.cep }}
+       </pre>
+     </div>
+   
+      
   </b-row>
 
   </div>
@@ -60,8 +134,15 @@ export default {
           {id:4, titulo: "Capitã Marvel", descricao:"Um filme de heróis", valor:25, imagem:"https://upload.wikimedia.org/wikipedia/pt/thumb/5/59/Captain_Marvel_%282018%29.jpg/250px-Captain_Marvel_%282018%29.jpg",estoqueDisp: 4},
           {id:5, titulo: "Brightburn", descricao:"Um filme de heróis", valor:25, imagem:"https://s2.glbimg.com/ymb71yQSk38YMYeoe0717NTTisk=/e.glbimg.com/og/ed/f/original/2019/05/21/brightburn_regposter_brazil.jpg",estoqueDisp: 8}
         ],
-        carrinho:[]
-      
+        carrinho:[],
+      pedido:{
+        primeiroN:"",
+        segundoN:"",
+        endereco:"",
+        cidade:"",
+        estado:"",
+        cep:""
+      }
     }
   },
   methods : {
