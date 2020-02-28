@@ -1,8 +1,16 @@
 <template>
   <div id="filmes" class="container">
-    <h2 id="enc"> Filmes Encontrados </h2>
-    <b-button variant="outline-primary"> Carrinho: {{ quantidadeCarrinho}} filmes</b-button>
-    
+    <b-row>
+      <b-col>
+      <h2 id="enc"> Filmes Encontrados </h2>
+      </b-col>
+    </b-row>
+    <b-row>
+     
+      <b-col align="center" >
+      <b-button variant="outline-primary" @click="mostrarCarrinho"> Carrinho: {{ quantidadeCarrinho}} filmes</b-button>
+      </b-col>
+    </b-row>
     <!-- <b-row>
       <b-col >
         <b-card style="width:14rem id= "card" title="Vingadores" sub-title="Gênero:Ação">
@@ -41,17 +49,19 @@
         </b-card>
       </b-col>
   </b-row> -->
-  <b-row>
+ 
+  <!-- <b-row>
     <ul>
     <li v-for="filme in filmes" v-bind:key="filme">{{filme.titulo}} </li>
     </ul>
   </b-row>
-    <div class="cards">
-  <b-row>
+  -->
+  <div class="cards">
+  <b-row v-if="mostrarFilmes"> 
 
     <b-col v-for="filme in filmes" v-bind:key="filme">
       <b-card  style="width:14rem" 
-      title="filme.titulo"
+      :title="filme.titulo"
       :id="filme.id"
       :img-src="filme.imagem"
       img-top
@@ -62,13 +72,20 @@
       >
         <b-card-text > {{filme.descricao}} </b-card-text>
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
-         <b-button variant="outline-primary"><a href="#" class="card-link" @click="adicionarCarrinho(filme)">Alugar</a></b-button>
+         <b-button variant="outline-primary">
+          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-if="validarPermissaoParaAdicionar(filme)">Alugar</a>
+          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-else type="disabled">Alugar</a>
+          </b-button>
       </b-card>
     </b-col>
   
     
   </b-row>
+  <b-row v-else>
+    <h2> Carrinho </h2>
+  </b-row>
   </div>
+
     
   </div>
 </template>
@@ -78,12 +95,13 @@ export default {
   name: 'Filmes',
   data:function (){
     return{
+      mostrarFilmes:true,
       filmes: 
-        [ {id:1, titulo: "Vingadores", descricao:"Um filme de heróis", valor:25, imagem:"https://cdn.telecineplay.com.br/isl/api/v1/dataservice/ResizeImage/$value?Format=%27jpg%27&Quality=85&ImageId=%27141726%27&EntityType=%27Item%27&EntityId=%273863%27&Width=1080&Height=1600&device=web_browser&subscriptions=Anonymous"},
-          {id:2, titulo: "Vingadores 2 ", descricao:"Um filme de heróis", valor:25,imagem:"https://upload.wikimedia.org/wikipedia/pt/thumb/2/22/OsVingadores2.jpg/250px-OsVingadores2.jpg"},
-          {id:3, titulo: "Pantera Negra", descricao:"Um filme de heróis", valor:25,imagem:"https://cdn.telecineplay.com.br/isl/api/v1/dataservice/ResizeImage/$value?Format=%27jpg%27&Quality=85&ImageId=%27182460%27&EntityType=%27Item%27&EntityId=%2710148%27&Width=720&Height=1080&device=web_browser&subscriptions=Anonymous"},
-          {id:4, titulo: "Capitã Marvel", descricao:"Um filme de heróis", valor:25, imagem:"https://upload.wikimedia.org/wikipedia/pt/thumb/5/59/Captain_Marvel_%282018%29.jpg/250px-Captain_Marvel_%282018%29.jpg"},
-          {id:5, titulo: "Brightburn", descricao:"Um filme de heróis", valor:25, imagem:"https://s2.glbimg.com/ymb71yQSk38YMYeoe0717NTTisk=/e.glbimg.com/og/ed/f/original/2019/05/21/brightburn_regposter_brazil.jpg"}
+        [ {id:1, titulo: "Vingadores", descricao:"Um filme de heróis", valor:25, imagem:"https://cdn.telecineplay.com.br/isl/api/v1/dataservice/ResizeImage/$value?Format=%27jpg%27&Quality=85&ImageId=%27141726%27&EntityType=%27Item%27&EntityId=%273863%27&Width=1080&Height=1600&device=web_browser&subscriptions=Anonymous",estoqueDisp: 3},
+          {id:2, titulo: "Vingadores 2 ", descricao:"Um filme de heróis", valor:25,imagem:"https://upload.wikimedia.org/wikipedia/pt/thumb/2/22/OsVingadores2.jpg/250px-OsVingadores2.jpg",estoqueDisp:7},
+          {id:3, titulo: "Pantera Negra", descricao:"Um filme de heróis", valor:25,imagem:"https://cdn.telecineplay.com.br/isl/api/v1/dataservice/ResizeImage/$value?Format=%27jpg%27&Quality=85&ImageId=%27182460%27&EntityType=%27Item%27&EntityId=%2710148%27&Width=720&Height=1080&device=web_browser&subscriptions=Anonymous",estoqueDisp: 34},
+          {id:4, titulo: "Capitã Marvel", descricao:"Um filme de heróis", valor:25, imagem:"https://upload.wikimedia.org/wikipedia/pt/thumb/5/59/Captain_Marvel_%282018%29.jpg/250px-Captain_Marvel_%282018%29.jpg",estoqueDisp: 4},
+          {id:5, titulo: "Brightburn", descricao:"Um filme de heróis", valor:25, imagem:"https://s2.glbimg.com/ymb71yQSk38YMYeoe0717NTTisk=/e.glbimg.com/og/ed/f/original/2019/05/21/brightburn_regposter_brazil.jpg",estoqueDisp: 8}
         ],
         carrinho:[]
       
@@ -92,6 +110,21 @@ export default {
   methods : {
     adicionarCarrinho: function (filme){
       this.carrinho.push(filme.id);
+    },
+    quantidadeNoCarrinhoPorFilme: function (filme){
+      var quantidade = 0;
+      for(var i=0;i<this.carrinho.length; i++){
+        if (filme.id==this.carrinho[i]){
+          quantidade++;
+        }
+      }
+      return quantidade;
+    },
+    validarPermissaoParaAdicionar: function(filme){
+      return filme.estoqueDisp > this.quantidadeNoCarrinhoPorFilme(filme);
+    },
+    mostrarCarrinho(){
+      this.mostrarFilmes = this.mostrarFilmes ? false:true;
     }
   },
   computed: {
@@ -119,6 +152,7 @@ a {
 .card{
   display: flex;
   justify-content: center;
+  align-content: space-around;
   text-align:center;
   margin-top:2%;
 }
@@ -129,7 +163,7 @@ a {
 
 #cards{
   display:flex;
-  justify-content: space-between;
+  justify-content: space-around;;
 
 }
 
