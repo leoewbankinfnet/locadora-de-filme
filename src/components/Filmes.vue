@@ -11,51 +11,7 @@
       <b-button variant="outline-primary" @click="mostrarCarrinho"> Carrinho: {{ quantidadeCarrinho}} filmes</b-button>
       </b-col>
     </b-row>
-    <!-- <b-row>
-      <b-col >
-        <b-card style="width:14rem id= "card" title="Vingadores" sub-title="Gênero:Ação">
-        <b-card-text>
-          Um filme de Heróis
-        </b-card-text>
 
-        <b-card-text>R$25,00</b-card-text>
-
-        <a href="#" class="card-link">Clique aqui para alugar</a>
-        
-        </b-card>
-      </b-col>
-     <b-col >
-        <b-card id= "card" title="Vingadores" sub-title="Gênero:Ação">
-        <b-card-text>
-          Um filme de Heróis
-        </b-card-text>
-
-        <b-card-text>R$25,00</b-card-text>
-
-        <a href="#" class="card-link">Clique aqui para alugar</a>
-        
-        </b-card>
-      </b-col>
-       <b-col >
-        <b-card id= "card" title="Vingadores" sub-title="Gênero:Ação">
-        <b-card-text>
-          Um filme de Heróis
-        </b-card-text>
-
-        <b-card-text>R$25,00</b-card-text>
-
-        <a href="#" class="card-link">Clique aqui para alugar</a>
-        
-        </b-card>
-      </b-col>
-  </b-row> -->
- 
-  <!-- <b-row>
-    <ul>
-    <li v-for="filme in filmes" v-bind:key="filme">{{filme.titulo}} </li>
-    </ul>
-  </b-row>
-  -->
   <div class="cards">
   <b-row v-if="mostrarFilmes"> 
 
