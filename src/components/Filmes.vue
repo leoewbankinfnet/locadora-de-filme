@@ -30,7 +30,7 @@
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
          <b-button variant="outline-primary">
           <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-if="validarPermissaoParaAdicionar(filme)">Alugar</a>
-          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-else type="disabled">Alugar</a>
+          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-else>Alugar</a>
           </b-button>
       </b-card>
     </b-col>
@@ -38,8 +38,9 @@
     
   </b-row>
   <b-row v-else>
-    <h2> Carrinho </h2>
+      <h2> Carrinho </h2>   
   </b-row>
+
   </div>
 
     
