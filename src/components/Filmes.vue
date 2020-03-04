@@ -26,12 +26,30 @@
       tag = "article"
       class="mb-2"
       >
+        <span class="mensagem-estoque"
+          v-if="filme.estoqueDisp-quantidadeNoCarrinhoPorFilme(filme)==0">
+            Indisponível
+        </span>
+        <span class="mensagem-estoque"
+          v-else-if="filme.estoqueDisp-quantidadeNoCarrinhoPorFilme(filme)<=5">
+            Apenas {{filme.estoqueDisp - quantidadeNoCarrinhoPorFilme(filme)}} itens no estoque
+        </span>
+        <span class="mensagem-estoque"
+          v-else>
+            Alugue Agora
+        </span>
         <b-card-text > {{filme.descricao}} </b-card-text>
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
-         <b-button variant="outline-primary">
-          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-if="validarPermissaoParaAdicionar(filme)">Alugar</a>
-          <a href="#" class="card-link" @click="adicionarCarrinho(filme)" v-else>Alugar</a>
-          </b-button>
+         
+          <a href="#" 
+          class="btn btn-primary" 
+          @click="adicionarCarrinho(filme)" 
+          v-if="validarPermissaoParaAdicionar(filme)">Alugar</a>
+          <a href="#" 
+          v-else
+          class="btn btn-primary disabled"  
+          >Alugar</a>
+          
       </b-card>
     </b-col>
   
@@ -48,7 +66,7 @@
              class="form-control"
              id="primeiroNome"
              placeholder="Digita o primeiro nome"
-             v-model="pedido.primeiroNome"
+             v-model.trim.lazy="pedido.primeiroNome"
            >
          </div>
          <div class="form-group">
@@ -58,7 +76,7 @@
              class="form-control"
              id="ultimoNome"
              placeholder="Digite o último nome"
-             v-model="pedido.ultimoNome"
+             v-model.trim.lazy="pedido.ultimoNome"
            >
          </div>
          <div class="form-group">
@@ -68,7 +86,7 @@
              class="form-control"
              id="endereco"
              placeholder="Digita o endereço"
-             v-model="pedido.endereco"
+             v-model.trim.lazy="pedido.endereco"
            >
          </div>
          <div class="form-group">
@@ -78,29 +96,80 @@
              class="form-control"
              id="cidade"
              placeholder="Digita a cidade"
-             v-model="pedido.cidade"
+             v-model.trim="pedido.cidade"
            >
          </div>
          <div class="form-group">
            <label for="estado">Estado</label>
            <select class="form-control" id="estado" v-model="pedido.estado">
-             <option disabled value>Escolha um estado</option>
-             <option>RJ</option>
-             <option>SP</option>
+            <option disabled value> Escolha um estado </option>
+            <option 
+              v-for="(estado,key) in estados"
+              v-bind:value="estado"
+              v-bind:key="key">
+              {{key}}
+            </option>
+             
            </select>
          </div>
          <div class="form-group">
            <label for="cep">CEP</label>
            <input
-             type="text"
+             type="number"
              class="form-control"
              id="cep"
              placeholder="Digita o CEP"
-             v-model="pedido.cep"
+             v-model.number.trim="pedido.cep"
            >
          </div>
+        
+         <div class="form-group form-check">
+           <input
+              type="checkbox"
+              class="form-check-input"
+              id="pagoNaEntrega"
+              v-bind:true-value="pedido.simNaEntrega"
+              v-bind:false-value="pedido.naoNaEntrega"
+              v-model="pedido.pagoNaEntrega">
+            <label class="form-check-label" for="pagoNaEntrega"> Pago na Entrega?</label>
+         </div>
+         <div class = "form-group form-check-inline">
+           <input
+              type="radio"
+              class="form-check-input"
+              id="manha"
+              value="Manhã"
+              v-model="pedido.entrega">
+            <label class="form-check-label" for="manha"> Manhã</label>
+         </div>
+          <div class = "form-group form-check-inline">
+           <input
+              type="radio"
+              class="form-check-input"
+              id="tarde"
+              value="Tarde"
+              v-model="pedido.entrega">
+            <label class="form-check-label" for="Tarde"> Tarde</label>
+         </div>
+          <div class = "form-group form-check-inline">
+           <input
+              type="radio"
+              class="form-check-input"
+              id="noite"
+              value="Noite"
+              v-model="pedido.entrega">
+            <label class="form-check-label" for="noite"> Noite</label>
+         </div>
+         <div class="form-group">
+            <button type="submit" class="btn btn-primary" v-on:click="submitFormulario">
+              Finalizar pedido
+            </button>
+         </div>
+
        </form>
      </div>
+    
+
      <div class="col-12">
        <pre>
          Primeiro nome: {{ pedido.primeiroNome }}
@@ -109,6 +178,8 @@
          Cidade: {{ pedido.cidade }}
          Estado: {{ pedido.estado }}
          CEP: {{ pedido.cep }}
+         Pago na entrega?: {{pedido.pagoNaEntrega}}
+         Entrega: {{pedido.entrega}}
        </pre>
      </div>
    
@@ -141,7 +212,17 @@ export default {
         endereco:"",
         cidade:"",
         estado:"",
-        cep:""
+        cep:"",
+        pagoNaEntrega: "Não",
+        simNaEntrega:"Sim",
+        naoNaEntrega:"Não",
+        entrega:"Manhã"
+      },
+      estados:{
+        RJ:"Rio de Janeiro",
+        MG:"Minas Gerais",
+        SP:"São Paulo",
+        ES:"Espirito Santo"
       }
     }
   },
@@ -163,6 +244,9 @@ export default {
     },
     mostrarCarrinho(){
       this.mostrarFilmes = this.mostrarFilmes ? false:true;
+    },
+    submitFormulario(){
+      alert("Pedido Finalizado");
     }
   },
   computed: {
@@ -203,6 +287,9 @@ a {
   display:flex;
   justify-content: space-around;;
 
+}
+.mensagem-estoque{
+  font-weight: bold;
 }
 
 </style>
