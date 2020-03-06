@@ -40,12 +40,15 @@
         </span>
         <b-card-text > {{filme.descricao}} </b-card-text>
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
+
          <div class="avaliacao">
               <span v-for="n in 5" :key="n"
                 v-bind:class="{'avaliacao-active': checarAvaliacao(n,filme)}">
                 <img src="../assets/star.jpg" height="20"/>
               </span>
          </div>
+
+         
           <a href="#" 
           class="btn btn-primary" 
           @click="adicionarCarrinho(filme)" 
