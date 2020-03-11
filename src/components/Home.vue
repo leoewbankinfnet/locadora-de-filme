@@ -8,11 +8,7 @@
       <div class="row">
      <div class="col">
        <h2>Filmes encontrados</h2>
-       <button
-         type="button"
-         class="btn btn-primary btn-lg"
-         @click="mostrarCarrinhoForm"
-       >Carrinho: {{ quantidadeCarrinho }} filmes</button>
+       
      </div>
      </div>
       
@@ -23,27 +19,38 @@
 
     <b-col v-for="filme in filmes" v-bind:key="filme">
       <b-card  style="width:14rem" 
-      :title="filme.titulo"
+     
       :id="filme.id"
       :img-src="filme.imagem"
       img-top
       img-alt="Poster"
-      
       tag = "article"
       class="mb-2"
       >
+
+      <b-card-text>
+        <router-link
+              tag='h5'
+              class="card-title"
+              :to="{name:'filme', params:{id:filme.id}}">{{filme.titulo}}
+        </router-link>
+      </b-card-text>
+
         <span class="mensagem-estoque"
           v-if="filme.estoqueDisp-quantidadeNoCarrinhoPorFilme(filme)==0">
             Indisponível
         </span>
+
         <span class="mensagem-estoque"
           v-else-if="filme.estoqueDisp-quantidadeNoCarrinhoPorFilme(filme)<=5">
             Apenas {{filme.estoqueDisp - quantidadeNoCarrinhoPorFilme(filme)}} itens no estoque
         </span>
+
         <span class="mensagem-estoque"
           v-else>
             Alugue Agora
         </span>
+        
         <b-card-text > {{filme.descricao}} </b-card-text>
         <b-card-text> {{filme.valor|formatarPreco("R$")}} </b-card-text>
 
@@ -63,6 +70,7 @@
           v-else
           class="btn btn-primary disabled"  
           >Alugar</a>
+          
           
       </b-card>
     </b-col>

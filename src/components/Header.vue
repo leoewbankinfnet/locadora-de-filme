@@ -1,7 +1,23 @@
 <template>
   <div class="hello">
     <h1>Bem vindo a {{ Title }}</h1>
-    
+
+    <router-link
+        active-class="active"
+         tag="button"
+         class="btn btn-primary btn-lg"
+         :to="{name:'home'}"
+       >Home</router-link>
+       <router-link
+         active-class="active"
+         type="button"
+         class="btn btn-primary btn-lg"
+         style="margin-left:10px"
+         :to="{name:'carrinho'}"
+       >Carrinho: {{ quantidadeCarrinho }} filmes</router-link>
+       
+       
+
     <!-- Diretivas condicionais, pode-se mudar formatação de estilos--> 
     <h3 id="aberta" v-if="horas>=7 && horas<17"> Aberta </h3>
     <h3 id="quase" v-else-if="horas>= 17 && horas<18"> Perto de fechar </h3>
@@ -17,7 +33,9 @@
 
 export default {
   name: 'Header',
-  
+  props:{
+    quantidadeCarrinho:Number
+  },
   data: function (){
     return{
     Title:"Locadora de Filmes",
@@ -29,6 +47,9 @@ export default {
   methods:{
     mostrarCarrinho(){
       this.$router.push({name:'carrinho'});
+    },
+    mostrarHome(){
+      this.$router.push({name:'home'});
     }
   }
         

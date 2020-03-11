@@ -2,6 +2,7 @@
   <div id="carrinho" class="col-12">
   <Header/>
       <h2>Carrinho</h2>
+       
       <div class="col-12">
        <form>
          <div class="form-row">
@@ -142,6 +143,9 @@ export default {
   components:{
     Header
   },
+  props:{
+    quantidadeCarrinho:Number
+  },
   data: function(){
     return {
       pedido: {
@@ -166,6 +170,9 @@ export default {
   },methods: {
     submitFormulario() {
       alert('Pedido finalizado');
+    },
+    mostrarHome(){
+      this.$router.push({name:'home'});
     }
     }
 }
